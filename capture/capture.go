@@ -4,7 +4,7 @@
  * @Author: cm.d
  * @Date: 2021-10-14 22:07:07
  * @LastEditors: cm.d
- * @LastEditTime: 2021-10-15 20:34:18
+ * @LastEditTime: 2021-10-15 21:18:44
  */
 
 package capture
@@ -12,7 +12,7 @@ package capture
 type GTCaptureModel struct {
 	X      int    //图片位于屏幕坐标X
 	Y      int    //图片位于屏幕坐标Y
-	Length int    //图片宽
+	Width  int    //图片宽
 	Height int    //图片高
 	Image  []byte //图片数据byte数组
 }
@@ -20,17 +20,18 @@ type GTCaptureModel struct {
 type GTCapture interface {
 
 	/**
-	* @name: CaptureFullScreen
-	* @msg: 全局截屏
-	* @return 截图结构体
+	 * @name: CaptureFullScreen
+	 * @msg: 全屏截图
+	 * @param {*GTCaptureModel} 截屏描述结构体
+	 * @return {error} 截图结构体，截图失败返回error, 否则返回nil
 	 */
-	CaptureFullScreen() (*GTCaptureModel, error)
+	CaptureFullScreen(GTCaptureModel) error
 
 	/**
-	 * @name: Capture
-	 * @msg: 根据给定坐标及宽高截图
-	 * @param 给定坐标、宽、高
-	 * @return 截图结构体
+	 * @name:
+	 * @msg:
+	 * @param {*GTCaptureModel} 截屏描述结构体
+	 * @return {error} 截图结构体，截图失败返回error, 否则返回nil
 	 */
-	Capture(x, y, length, height int) (*GTCaptureModel, error)
+	Capture(*GTCaptureModel) error
 }
