@@ -4,7 +4,7 @@
  * @Author: cm.d
  * @Date: 2021-10-14 22:07:07
  * @LastEditors: cm.d
- * @LastEditTime: 2021-10-15 21:18:44
+ * @LastEditTime: 2021-10-16 18:36:21
  */
 
 package capture
@@ -25,7 +25,7 @@ type GTCapture interface {
 	 * @param {*GTCaptureModel} 截屏描述结构体
 	 * @return {error} 截图结构体，截图失败返回error, 否则返回nil
 	 */
-	CaptureFullScreen(GTCaptureModel) error
+	CaptureFullScreen(*GTCaptureModel) error
 
 	/**
 	 * @name:

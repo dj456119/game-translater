@@ -4,13 +4,15 @@
  * @Author: cm.d
  * @Date: 2021-10-15 20:16:57
  * @LastEditors: cm.d
- * @LastEditTime: 2021-10-15 21:17:50
+ * @LastEditTime: 2021-10-16 18:37:10
  */
 package controller
 
 import (
 	"github.com/dj456119/game-translater/capture"
+	samplecapture "github.com/dj456119/game-translater/capture/sample-capture"
 	"github.com/dj456119/game-translater/ocr"
+	aliyunocr "github.com/dj456119/game-translater/ocr/aliyun-ocr"
 	"github.com/dj456119/game-translater/translater"
 )
 
@@ -71,7 +73,7 @@ func (gtc *GTController) CaptureScreenAndTranslate(req *GTRequest) *GTResponse {
 
 	//翻译
 	gTranslater := new(translater.GTranslaterModel)
-	gTranslater.Words = gTOCRModel.Word
+	gTranslater.Words = gTOCRModel.Words
 	err = gtc.GTranslater.Translate(gTranslater)
 	if err != nil {
 		return CreateErrResponse(err)
@@ -106,4 +108,11 @@ func CreateSuccessResponse(words, translated []string) *GTResponse {
 	resp.Data = respData
 	resp.Status = GTResponseStatusSuccess
 	return resp
+}
+
+func NewGTController() *GTController {
+	controller := new(GTController)
+	controller.GTCapture = new(samplecapture.SampleGTCapture)
+	controller.GTOCR = aliyunocr.NewAliyunOCR()
+	return controller
 }
