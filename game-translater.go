@@ -11,7 +11,7 @@ package main
 import (
 	"github.com/dj456119/game-translater/config"
 	"github.com/dj456119/game-translater/log"
-	"github.com/dj456119/game-translater/test"
+	govclview "github.com/dj456119/game-translater/view/govcl-view"
 	"github.com/sirupsen/logrus"
 )
 
@@ -21,6 +21,7 @@ func init() {
 }
 
 func main() {
-	logrus.Info("游戏英翻机启动")
-	test.Test()
+	logrus.Info("游戏翻译机启动")
+	//test.Test()
+	govclview.Init()
 }

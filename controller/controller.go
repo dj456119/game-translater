@@ -14,6 +14,7 @@ import (
 	"github.com/dj456119/game-translater/ocr"
 	aliyunocr "github.com/dj456119/game-translater/ocr/aliyun-ocr"
 	"github.com/dj456119/game-translater/translater"
+	baidutranslater "github.com/dj456119/game-translater/translater/baidu-translater"
 )
 
 type GTResponse struct {
@@ -105,6 +106,7 @@ func CreateSuccessResponse(words, translated []string) *GTResponse {
 	resp := new(GTResponse)
 	respData := new(GTResponseData)
 	respData.Words = words
+	respData.Translated = translated
 	resp.Data = respData
 	resp.Status = GTResponseStatusSuccess
 	return resp
@@ -114,5 +116,6 @@ func NewGTController() *GTController {
 	controller := new(GTController)
 	controller.GTCapture = new(samplecapture.SampleGTCapture)
 	controller.GTOCR = aliyunocr.NewAliyunOCR()
+	controller.GTranslater = baidutranslater.NewBaiduTranslater()
 	return controller
 }

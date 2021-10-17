@@ -9,6 +9,8 @@
 package baidutranslater
 
 import (
+	"fmt"
+
 	"github.com/dj456119/game-translater/translater"
 	"github.com/jinzhu/configor"
 	baidutranslate "github.com/shenjinti/baidu_translate_go"
@@ -33,15 +35,17 @@ type BaiduTranslater struct {
 }
 
 func (bt BaiduTranslater) Translate(gtModel *translater.GTranslaterModel) error {
-	gtModel.Translated = make([]string, len(gtModel.Words))
+	gtModel.Translated = make([]string, 1)
+	wordString := ""
 	var err error
-	for i, word := range gtModel.Words {
-		gtModel.Translated[i], err = bt.BaiduTranslate.Text("en", "zh", word)
-		if err != nil {
-			return err
-		}
+	for _, word := range gtModel.Words {
+
+		wordString = fmt.Sprintf("%s%s", wordString, word)
 	}
-	return nil
+	gtModel.Words = []string{wordString}
+	gtModel.Translated[0], err = bt.BaiduTranslate.Text("en", "zh", wordString)
+	logrus.Debug("翻译成功，结果:", gtModel.Translated[0])
+	return err
 }
 
 func NewBaiduTranslater() *BaiduTranslater {

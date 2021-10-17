@@ -51,6 +51,7 @@ func (sgtc SampleGTCapture) CaptureFullScreen(gTCaptureModel *capture.GTCaptureM
 	if err != nil {
 		return err
 	}
+
 	logrus.Debug("截图成功,图像大小", image.Rect)
 
 	buffer := new(bytes.Buffer)
