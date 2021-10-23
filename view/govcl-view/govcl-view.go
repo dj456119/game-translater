@@ -19,7 +19,9 @@ import (
 )
 
 const (
-	CaptureFormWidth = 800
+	CaptureFormWidth    = 800
+	TranslateFormWidth  = 270
+	TranslateFormHeight = 400
 )
 
 type TranslaterForm struct {
@@ -31,11 +33,14 @@ type TranslaterForm struct {
 	ButtonCapture   *vcl.TButton //截图按钮
 	EditWords       *vcl.TMemo   //原始文字
 	EditTranslated  *vcl.TMemo   //翻译文字
+	ButtonAbout     *vcl.TButton //关于按钮
 	Con             *controller.GTController
 	GTRequest       *controller.GTRequest
 }
 
 var MyTranslaterForm *TranslaterForm
+var MyCaptureForm *CaptureForm
+var IsInit bool = false
 
 func Init() {
 
@@ -48,66 +53,70 @@ func (f *TranslaterForm) OnFormCreate(sender vcl.IObject) {
 	f.Con = con
 
 	request := new(controller.GTRequest)
-	request.X = 0
-	request.Y = 0
-	request.Height = 900
-	request.Width = 1600
 	f.GTRequest = request
 
 	f.SetShowInTaskBar(types.StAlways)
-	f.SetCaption("游戏翻译机")
+	f.SetCaption("游戏翻译机v0.0.1")
 	f.EnabledMaximize(false)
-	f.SetWidth(400)
-	f.SetHeight(600)
+	f.SetWidth(TranslateFormWidth)
+	f.SetHeight(TranslateFormHeight)
 	f.ScreenCenter()
 
 	f.Label = vcl.NewLabel(f)
 	f.Label.SetParent(f)
 	f.Label.SetCaption(f.GetRealArea())
 	f.Label.SetLeft(20)
-	f.Label.SetTop(20)
-	f.Label.SetBounds(20, 20, 360, 20)
+	f.Label.SetBounds(10, 5, 250, 20)
 
 	//设置Label
 	f.Label1 = vcl.NewLabel(f)
 	f.Label1.SetParent(f)
 	f.Label1.SetCaption("实时捕捉的屏幕文字")
-	f.Label1.SetLeft(20)
-	f.Label1.SetTop(50)
+	f.Label1.SetLeft(10)
+	f.Label1.SetTop(25)
 
 	//设置实时捕捉的文本
 	f.EditWords = vcl.NewMemo(f)
 	f.EditWords.SetParent(f)
 	f.EditWords.SetText("在这里显示正从屏幕获取的文本")
-	f.EditWords.SetBounds(20, 70, 360, 200)
+	f.EditWords.SetBounds(10, 40, 250, 150)
 
 	//设置Labe2
 	f.Label2 = vcl.NewLabel(f)
 	f.Label2.SetParent(f)
 	f.Label2.SetCaption("实时翻译的文字")
-	f.Label2.SetLeft(20)
-	f.Label2.SetTop(280)
+	f.Label2.SetLeft(10)
+	f.Label2.SetTop(195)
 
 	//设置实时翻译的文本
 	f.EditTranslated = vcl.NewMemo(f)
 	f.EditTranslated.SetParent(f)
 	f.EditTranslated.SetText("在这里显示被翻译的文本")
-	f.EditTranslated.SetBounds(20, 300, 360, 200)
+	f.EditTranslated.SetBounds(10, 210, 250, 150)
 
 	//设置按钮
 	f.ButtonTranslate = vcl.NewButton(f)
 	f.ButtonTranslate.SetParent(f)
 	f.ButtonTranslate.SetCaption("启动翻译")
-	f.ButtonTranslate.SetLeft(220)
-	f.ButtonTranslate.SetTop(540)
+	f.ButtonTranslate.SetLeft(98)
+	f.ButtonTranslate.SetTop(365)
 	f.ButtonTranslate.SetOnClick(f.OnButtonTranslateClick)
 
 	f.ButtonCapture = vcl.NewButton(f)
 	f.ButtonCapture.SetParent(f)
 	f.ButtonCapture.SetCaption("文本区域")
-	f.ButtonCapture.SetLeft(20)
-	f.ButtonCapture.SetTop(540)
+	f.ButtonCapture.SetLeft(10)
+	f.ButtonCapture.SetTop(365)
 	f.ButtonCapture.SetOnClick(f.OnButtonCaptureClick)
+
+	f.ButtonAbout = vcl.NewButton(f)
+	f.ButtonAbout.SetParent(f)
+	f.ButtonAbout.SetCaption("关于")
+	f.ButtonAbout.SetLeft(185)
+	f.ButtonAbout.SetTop(365)
+	f.ButtonAbout.SetOnClick(func(sender vcl.IObject) {
+		vcl.ShowMessage("版本v0.0.1，作者cm.d")
+	})
 }
 
 func (f *TranslaterForm) OnFormClose(sender vcl.IObject, action *types.TCloseAction) {
@@ -115,13 +124,16 @@ func (f *TranslaterForm) OnFormClose(sender vcl.IObject, action *types.TCloseAct
 }
 
 func (f *TranslaterForm) OnButtonTranslateClick(sender vcl.IObject) {
+	if !IsInit {
+		vcl.ShowMessage("您还没设置文字捕捉区域")
+		return
+	}
 	words := f.EditWords.Text()
-	//if words == "" {
+
 	logrus.Debug("输入的翻译文字", words)
 	logrus.Debug("触发翻译，翻译区间为", f.GTRequest)
 	resp := f.Con.CaptureScreenAndTranslate(f.GTRequest)
 	if len(resp.Data.Words) != 0 {
-
 		f.EditWords.SetText(resp.Data.Words[0])
 	}
 
@@ -150,8 +162,6 @@ type CaptureForm struct {
 	OriImage *vcl.TPngImage
 }
 
-var MyCaptureForm *CaptureForm
-
 type TPoint struct {
 	X, Y int32
 	Down bool
@@ -163,7 +173,7 @@ var (
 )
 
 func (f *TranslaterForm) GetRealArea() string {
-	return fmt.Sprintf("当前捕捉的区域顶点坐标[%d,%d],长：%d，宽%d", f.GTRequest.X, f.GTRequest.Y, f.GTRequest.Width, f.GTRequest.Height)
+	return fmt.Sprintf("捕捉区域顶点[%d,%d],长%d,宽%d", f.GTRequest.X, f.GTRequest.Y, f.GTRequest.Width, f.GTRequest.Height)
 }
 
 func (f *CaptureForm) OnFormCreate(sender vcl.IObject) {
@@ -252,6 +262,7 @@ func (f *CaptureForm) OnFormCreate(sender vcl.IObject) {
 			MyTranslaterForm.GTRequest.Height = ZoomInFloat64(math.Abs(float64(upY)-float64(downY)), zoom)
 			MyTranslaterForm.Label.SetCaption(MyTranslaterForm.GetRealArea())
 			message := fmt.Sprintf("截取了新的区域，起点坐标为,x:%d,y为%d,width为%d,height为%d", MyTranslaterForm.GTRequest.X, MyTranslaterForm.GTRequest.Y, MyTranslaterForm.GTRequest.Width, MyTranslaterForm.GTRequest.Height)
+			IsInit = true
 			vcl.ShowMessage(message)
 
 			f.Hide()
