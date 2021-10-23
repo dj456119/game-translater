@@ -35,4 +35,4 @@ chmod +x game-translater
 |支持tesseract-ocr|否|
 |支持Windows|否|
 |支持Linux|否|
-|支持修改被识别的语句|否|
+|制作dmg安装包|否|
