@@ -4,7 +4,7 @@
  * @Author: cm.d
  * @Date: 2021-10-16 19:30:10
  * @LastEditors: cm.d
- * @LastEditTime: 2021-10-16 21:08:09
+ * @LastEditTime: 2021-10-24 02:08:26
  */
 package baidutranslater
 
@@ -50,9 +50,12 @@ func (bt BaiduTranslater) Translate(gtModel *translater.GTranslaterModel) error 
 
 func NewBaiduTranslater() *BaiduTranslater {
 	bt := new(BaiduTranslater)
-	btConfig := new(BaiduTranslaterConfig)
-	configor.Load(&btConfig, "baidu-translater-config.yaml")
-	bt.Config = *btConfig
+	btConfig := BaiduTranslaterConfig{}
+	err := configor.Load(&btConfig, "baidu-translater-config.yaml")
+	if err != nil {
+		logrus.Fatal("读取百度翻译配置文件失败", err)
+	}
+	bt.Config = btConfig
 	bt.BaiduTranslate = baidutranslate.NewBaiduTranslate(bt.Config.APPID, bt.Config.Key)
 	logrus.Info("读取百度云翻译配置成功，", bt.Config)
 	return bt

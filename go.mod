@@ -7,9 +7,12 @@ require (
 	github.com/bregydoc/gtranslate v0.0.0-20200913051839-1bd07f6c1fc5 // indirect
 	github.com/jinzhu/configor v1.2.1 // indirect
 	github.com/kbinani/screenshot v0.0.0-20210720154843-7d3a670d8329
+	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible // indirect
+	github.com/lestrrat-go/strftime v1.0.5 // indirect
 	github.com/magefile/mage v1.11.0
 	github.com/mind1949/googletrans v0.1.1 // indirect
 	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646
+	github.com/pkg/errors v0.9.1 // indirect
 	github.com/robertkrimen/otto v0.0.0-20211008084715-4eacda02dd21 // indirect
 	github.com/shenjinti/baidu_translate_go v0.0.0-20210908044203-7f3d429f2484 // indirect
 	github.com/sirupsen/logrus v1.8.1 // indirect

@@ -4,7 +4,7 @@
  * @Author: cm.d
  * @Date: 2021-10-16 16:46:21
  * @LastEditors: cm.d
- * @LastEditTime: 2021-10-16 18:21:10
+ * @LastEditTime: 2021-10-24 02:06:16
  */
 
 package aliyunocr
@@ -120,7 +120,10 @@ type AliyunOCR struct {
 func NewAliyunOCR() *AliyunOCR {
 	aliyunOCR := new(AliyunOCR)
 	aliyunOCR.Config = AliyunOCRConfig{}
-	configor.Load(&aliyunOCR.Config, "aliyun-ocr-config.yaml")
+	err := configor.Load(&aliyunOCR.Config, "aliyun-ocr-config.yaml")
+	if err != nil {
+		logrus.Fatal("读取阿里云ocr配置失败", err)
+	}
 	logrus.Info("读取阿里云ocr配置成功", aliyunOCR.Config)
 	return aliyunOCR
 }
