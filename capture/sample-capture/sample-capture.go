@@ -56,6 +56,7 @@ func (sgtc SampleGTCapture) CaptureFullScreen(gTCaptureModel *capture.GTCaptureM
 
 	buffer := new(bytes.Buffer)
 	err = png.Encode(buffer, image)
+
 	if err != nil {
 		return err
 	}
