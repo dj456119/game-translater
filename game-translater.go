@@ -4,7 +4,7 @@
  * @Author: cm.d
  * @Date: 2021-10-11 22:13:29
  * @LastEditors: cm.d
- * @LastEditTime: 2021-10-17 01:23:42
+ * @LastEditTime: 2021-10-24 00:55:16
  */
 package main
 
@@ -22,6 +22,5 @@ func init() {
 
 func main() {
 	logrus.Info("游戏翻译机启动")
-	//test.Test()
 	govclview.Init()
 }

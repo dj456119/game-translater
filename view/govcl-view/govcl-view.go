@@ -43,9 +43,7 @@ var MyCaptureForm *CaptureForm
 var IsInit bool = false
 
 func Init() {
-
 	vcl.RunApp(&MyTranslaterForm, &MyCaptureForm)
-
 }
 
 func (f *TranslaterForm) OnFormCreate(sender vcl.IObject) {
