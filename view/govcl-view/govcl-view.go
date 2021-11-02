@@ -76,6 +76,7 @@ func (f *TranslaterForm) OnFormCreate(sender vcl.IObject) {
 	//设置实时捕捉的文本
 	f.EditWords = vcl.NewMemo(f)
 	f.EditWords.SetParent(f)
+	f.EditWords.SetReadOnly(true)
 	f.EditWords.SetText("在这里显示正从屏幕获取的文本")
 	f.EditWords.SetBounds(10, 40, 250, 150)
 

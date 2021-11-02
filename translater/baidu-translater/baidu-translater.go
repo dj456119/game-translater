@@ -4,7 +4,7 @@
  * @Author: cm.d
  * @Date: 2021-10-16 19:30:10
  * @LastEditors: cm.d
- * @LastEditTime: 2021-10-24 02:08:26
+ * @LastEditTime: 2021-11-02 23:57:23
  */
 package baidutranslater
 
@@ -40,7 +40,7 @@ func (bt BaiduTranslater) Translate(gtModel *translater.GTranslaterModel) error 
 	var err error
 	for _, word := range gtModel.Words {
 
-		wordString = fmt.Sprintf("%s%s", wordString, word)
+		wordString = fmt.Sprintf("%s %s", wordString, word)
 	}
 	gtModel.Words = []string{wordString}
 	gtModel.Translated[0], err = bt.BaiduTranslate.Text("en", "zh", wordString)
